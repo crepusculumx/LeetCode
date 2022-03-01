@@ -123,7 +123,6 @@ class Solution {
 };
 
 int main() {
-  Solution s;
-  cout << s.nearestPalindromic("9999");
+  std::cout << "Hello, World!" << std::endl;
   return 0;
 }
