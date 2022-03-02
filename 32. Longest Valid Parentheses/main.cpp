@@ -26,7 +26,7 @@ struct Interval {
 
 class Solution {
  private:
-  priority_queue<Interval, vector<Interval>, greater<>> q_start, q_swap;
+  deque<Interval> q_start, q_swap;
 
   string str;
   size_t length;
@@ -47,18 +47,18 @@ class Solution {
     return res;
   }
 
-  bool merge(priority_queue<Interval, vector<Interval>, greater<>> &q,
-             priority_queue<Interval, vector<Interval>, greater<>> &q_temp) {
+  bool merge(deque<Interval> &q,
+             deque<Interval> &q_temp) {
     auto res = false;
-    auto lst_interval = q.top();
-    q.pop();
+    auto lst_interval = q.front();
+    q.pop_front();
 
     if (expand(lst_interval)) {
       res = true;
     }
     while (!q.empty()) {
-      auto cur_interval = q.top();
-      q.pop();
+      auto cur_interval = q.front();
+      q.pop_front();
 
       if (cur_interval.l == lst_interval.r + 1) {
         res = true;
@@ -66,14 +66,14 @@ class Solution {
       } else {
         if (expand(cur_interval)) {
           res = true;
-          q.push(cur_interval);
+          q.push_front(cur_interval);
         } else {
-          q_temp.push(lst_interval);
+          q_temp.push_back(lst_interval);
           lst_interval = cur_interval;
         }
       }
     }
-    q_temp.push(lst_interval);
+    q_temp.push_back(lst_interval);
     return res;
   }
 
@@ -85,7 +85,7 @@ class Solution {
 
     for (auto i = 0; i < length - 1; i++) {
       if (s[i] == '(' && s[i + 1] == ')') {
-        q_start.push(Interval(i, i + 1));
+        q_start.emplace_back(i, i + 1);
       }
     }
 
@@ -103,12 +103,12 @@ class Solution {
 
     auto res = 0;
     while (!q_start.empty()) {
-      res = max(q_start.top().getLength(), res);
-      q_start.pop();
+      res = max(q_start.front().getLength(), res);
+      q_start.pop_front();
     }
     while (!q_swap.empty()) {
-      res = max(q_swap.top().getLength(), res);
-      q_swap.pop();
+      res = max(q_swap.front().getLength(), res);
+      q_swap.pop_front();
     }
     return res;
   }
@@ -116,6 +116,6 @@ class Solution {
 
 int main() {
   Solution s;
-  cout << s.longestValidParentheses("") << endl;
+  cout << s.longestValidParentheses(")(())))(())())") << endl;
   return 0;
 }
