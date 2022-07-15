@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.22)
+project(558__Logical_OR_of_Two_Binary_Grids_Represented_as_Quad_Trees)
+
+set(CMAKE_CXX_STANDARD 17)
+
+add_executable(558__Logical_OR_of_Two_Binary_Grids_Represented_as_Quad_Trees main.cpp)
